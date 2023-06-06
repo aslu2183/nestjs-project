@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { createClient } from 'redis';
 type Test  ={
     status? : boolean
@@ -8,9 +9,10 @@ type Test  ={
 }
 @Injectable()
 export class AppService {
- 
+  constructor(private readonly configService: ConfigService) {}
   getHello(): string {
-    return 'Hello World!';
+    console.log(this.configService.get('MONGO_URI'))
+    return this.configService.get('MONGO_URI');
   }
 
   async setRedis():Promise<Test> {
