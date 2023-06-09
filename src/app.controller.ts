@@ -1,5 +1,6 @@
 import { Controller, Get, Inject } from '@nestjs/common';
 import { AppService } from './app.service';
+import { Book } from './schema/book.schema';
 
 
 
@@ -7,7 +8,6 @@ import { AppService } from './app.service';
 export class AppController {
   constructor(
     private readonly appService: AppService, 
-    
   ) {}
 
   @Get()
@@ -35,6 +35,11 @@ export class AppController {
   @Get("/get-redis")
   getRedisValue():object {
     return this.appService.getRedisValue();
+  }
+
+  @Get("/get-books")
+  getAllBooks():Promise<Book[]> {
+    return this.appService.getBooks();
   }
 
   

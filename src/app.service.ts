@@ -1,6 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+import { InjectModel } from '@nestjs/mongoose';
 import { createClient } from 'redis';
+import { Book } from './schema/book.schema';
+import { Model } from 'mongoose';
 type Test  ={
     status? : boolean
     message?: string
@@ -9,9 +12,9 @@ type Test  ={
 }
 @Injectable()
 export class AppService {
-  constructor(private readonly configService: ConfigService) {}
+  constructor(private readonly configService: ConfigService, @InjectModel(Book.name) private BookModel: Model<Book>) {}
   getHello(): string {
-    console.log(this.configService.get('MONGO_URI'))
+    console.log("aslam ",this.configService.get('MONGO_URI'))
     return this.configService.get('MONGO_URI');
   }
 
@@ -66,5 +69,10 @@ export class AppService {
       resolve({status:true,message:"Reddis Connection Success",client:client})
     })
     
+  }
+
+  async getBooks():Promise<Book[]> {
+    const data = await this.BookModel.find({});
+    return data;
   }
 }

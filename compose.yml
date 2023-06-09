@@ -1,4 +1,4 @@
-version: '1'
+version: '3'
 
 services:
   redis:
@@ -15,7 +15,7 @@ services:
   my-nest-app:
     depends_on:
       - redis
-    
+        
     build:
       dockerfile: Dockerfile
       context: .
@@ -30,6 +30,14 @@ services:
     environment:
       REDIS_HOST: my_redis
       REDIS_PORT: 6379   
+
+    extra_hosts:
+      - "mongodb:host-gateway"  
+
+    volumes:
+      - ./:/home/my_docker_app/myapp  
+
+
 
 volumes:
   redis-data:
